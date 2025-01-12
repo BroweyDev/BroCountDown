@@ -1,0 +1,168 @@
+# Настройки команд с задержкой
+command-delays:
+  # Секция предустановленных стилей телепортации
+  # Здесь можно создавать различные стили оформления телепортации
+  teleport-presets:
+    # Стиль по умолчанию
+    default:
+      # Настройка сообщений для этого стиля
+      messages:
+        # Сообщение, которое появится в чате при начале телепортации
+        chat: "&eНачинается телепортация..."
+        # Текст, который будет отображаться в боссбаре ({time} заменяется на оставшееся время)
+        bossbar: "&eТелепортация через {time}"
+        # Сообщение при отмене телепортации
+        cancel: "&cТелепортация отменена"
+      
+      # Настройки внешнего вида боссбара
+      bossbar:
+        # Цвет боссбара (доступные цвета: BLUE, GREEN, PINK, PURPLE, RED, WHITE, YELLOW)
+        color: GREEN
+        # Стиль боссбара (SOLID - сплошной, SEGMENTED_6, SEGMENTED_10, SEGMENTED_12, SEGMENTED_20)
+        style: SOLID
+      
+      # Включить или выключить кнопку отмены телепортации
+      cancel-button: true
+      
+      # Настройки звуковых эффектов
+      sounds:
+        # Звук при начале телепортации
+        start:
+          # Тип звука (список звуков: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html)
+          sound: ENTITY_ENDERMAN_TELEPORT
+          # Громкость звука (0.0 - 1.0)
+          volume: 1.0
+          # Высота звука (0.5 - 2.0)
+          pitch: 1.0
+        
+        # Звук при завершении телепортации
+        complete:
+          sound: ENTITY_PLAYER_LEVELUP
+          volume: 1.0
+          pitch: 1.0
+        
+        # Звук, который будет проигрываться каждую секунду отсчета
+        countdown:
+          # Включить или выключить звук отсчета
+          enabled: true
+          sound: BLOCK_NOTE_BLOCK_PLING
+          volume: 0.5
+          pitch: 1.0
+      
+      # Эффекты зелий
+      effects:
+        # Эффекты при начале телепортации
+        start:
+          - type: BLINDNESS # Тип эффекта
+            duration: 40    # Длительность в тиках (20 тиков = 1 секунда)
+            amplifier: 1    # Сила эффекта (начинается с 0)
+        
+        # Эффекты при завершении телепортации
+        complete:
+          - type: REGENERATION
+            duration: 60
+            amplifier: 1
+    
+    # Магический стиль телепортации (пример другого пресета)
+    magical:
+      messages:
+        chat: "&d✨ Подготовка магического телепорта..."
+        bossbar: "&d✨ Магический телепорт через {time} ✨"
+        cancel: "&5✨ Магический телепорт отменен"
+      bossbar:
+        color: PURPLE
+        style: SEGMENTED_20
+      cancel-button: true
+      sounds:
+        start:
+          sound: BLOCK_ENCHANTMENT_TABLE_USE
+          volume: 1.0
+          pitch: 1.0
+        complete:
+          sound: ENTITY_ILLUSIONER_MIRROR_MOVE
+          volume: 1.0
+          pitch: 1.0
+        countdown:
+          enabled: true
+          sound: BLOCK_NOTE_BLOCK_CHIME
+          volume: 0.3
+          pitch: 1.2
+      effects:
+        start:
+          - type: GLOWING
+            duration: 40
+            amplifier: 1
+        complete:
+          - type: LEVITATION
+            duration: 20
+            amplifier: 1
+
+  # Настройки конкретных команд
+  spawn:
+    # Задержка перед телепортацией в секундах
+    delay: 5
+    # Тип команды (TELEPORT - для телепортации, COOLDOWN - для команд с перезарядкой)
+    type: TELEPORT
+    # Какой стиль использовать из секции teleport-presets
+    preset: default
+    # Разные стили для разных миров
+    world-specific-presets:
+      world_nether: magical    # В аду будет использоваться магический стиль
+      world_the_end: default   # В крае - обычный стиль
+    # Настройки отмены телепортации при получении урона
+    cancel-on-damage:
+      mob: true    # Отменять при уроне от мобов
+      player: true # Отменять при уроне от игроков
+    
+  home:
+    delay: 5
+    type: TELEPORT
+    preset: magical
+    cancel-on-damage:
+      mob: false
+      player: true
+    group-delays:
+      vip: 3
+      premium: 2
+      admin: 0
+    messages:
+      chat: "&#ff0000Т&#ff4400е&#ff8800л&#ffcc00е&#ffff00п&#88ff00о&#00ff00р&#00ff88т&#00ffffа&#0088ffц&#0000ffи&#4400ffя"
+    cancel-button: "<center>&7[Отменить]"
+
+  # Пример команды с перезарядкой (например, /kit)
+  kit:
+    delay: 3600 # Задержка в секундах (3600 = 1 час)
+    type: COOLDOWN
+    messages:
+      # Сообщение при попытке использовать команду во время перезарядки
+      cooldown: "&cПодождите еще {time} перед повторным использованием"
+
+# Общие настройки плагина
+settings:
+  # Включить или выключить разные стили для разных миров
+  enable-world-specific-presets: true
+  # Включить или выключить отмену телепортации при получении урона
+  enable-damage-cancellation: true
+
+# Общие настройки сообщений
+messages:
+  # Текст кнопки отмены телепортации
+  cancel-button: "&7[Отменить]"
+  # Сообщение при отмене телепортации из-за получения урона
+  damage-cancel: "&cТелепортация отменена из-за получения урона!"
+  # Текст кнопки отмены телепортации при наведении
+  cancel-button-hover: "&eНажмите чтобы отменить телепортацию"
+  no-permission: "&cУ вас недостаточно прав для использования этой команды!"
+  reload-success: "&aКонфигурация успешно перезагружена!"
+  
+# Настройки отображения времени
+time-format:
+  # Сокращения для единиц времени
+  hours: "ч"
+  minutes: "м"
+  seconds: "с"
+  # Формат отображения времени
+  # {hours} - количество часов, {h} - сокращение часов
+  # {minutes} - количество минут, {m} - сокращение минут
+  # {seconds} - количество секунд, {s} - сокращение секунд
+  format: "{hours} {h} {minutes} {m} {seconds} {s}"

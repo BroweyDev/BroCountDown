@@ -1,0 +1,9 @@
+name: BroCountDown
+version: '1.0'
+main: dev.browey.brocountdown.BroCountdown
+api-version: '1.13'
+commands:
+  canceltp:
+    description: Отменить текущую телепортацию
+  brocd:
+    description: Осовная команда
